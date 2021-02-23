@@ -19,7 +19,7 @@ const svg = d3
     .append("svg")
     .attr("height",height)
     .attr("width",width)
-    .attr("transform","translate(100,10)");
+    .attr("transform","translate(30,30)");
 
 
 const descriptionBlock = svg
@@ -54,6 +54,8 @@ fetch(educationDataUrl)
                 console.log(eduData)
                 console.log(countyData);
 
-
+var projection = d3.geo.albersUsa()
+.scale(width/1.3/Math.PI)
+.translate([width/2,height/2]);
             })
     })
