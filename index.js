@@ -19,39 +19,29 @@ const svg = d3
     .append("svg")
     .attr("height",height)
     .attr("width",width)
-    .attr("transform","translate(0,100)");
+    .attr("transform","translate(100,10)");
 
-   const descriptionDiv = svg.append("p")
-   .text("hello")
-   .attr("height",100)
-   .attr("width",100)
-   .attr("transform","translate(10,10)");
-//         .append("p")
-//         .attr("x",100)
-//         .attr("y",100)
-//         .attr("height",100)
-//         .attr("width",100)
-//         .text("hello");
-// const descriptionBlock = svg
-//     .append("g")
-//     .attr("id","description")
-//     .attr("transform","translate(40,60)");
 
-// const descriptionSubBlock = descriptionBlock
-//     .append("g")
-//     .attr("transform","translate(40,60)");
+const descriptionBlock = svg
+    .append("g")
+    .attr("id","description");
+const descriptionSubBlock = descriptionBlock
+    .append("g");
 
-// const descriptionDiv = descriptionSubBlock
-//     .append("div")
-//     .attr("transform","translate(40,60)");
+    descriptionSubBlock
+        .append("text")
+        .attr("id","description-title")
+        .text("United States Educational Attainment")
+        .attr("x",width/4)
+        .attr("y",padding/2);
 
-//     descriptionDiv
-//         .append("p")
-//         .attr("x",100)
-//         .attr("y",100)
-//         .attr("height",100)
-//         .attr("width",100)
-//         .text("hello");
+        descriptionSubBlock
+        .append("text")
+        .attr("id","description-subtitle")
+        .text("Percentage of adults age 25 and older with a bachelor's degree or higher (2010-2014)")
+        .attr("x",width-70)
+        .attr("y",padding+50)
+        .attr("text-anchor","end");
 
 fetch(educationDataUrl)
     .then(response=>response.json())
