@@ -1,61 +1,121 @@
+
 const educationDataUrl = "https://cdn.freecodecamp.org/testable-projects-fcc/data/choropleth_map/for_user_education.json";
 const countyDataUrl = "https://cdn.freecodecamp.org/testable-projects-fcc/data/choropleth_map/counties.json";
 
 var eduData = [];
-var countyData=[];
+var countyData = [];
 
-const height=1000;
-const width=1200;
+const height = 1000;
+const width = 1200;
 const padding = 100;
 
 const title = d3
-.select("body")
-.append("title")
-.attr("id","title")
-.text("Choropleth Map");
+    .select("body")
+    .append("title")
+    .attr("id", "title")
+    .text("Choropleth Map");
 
 const svg = d3
     .select("#main")
     .append("svg")
-    .attr("height",height)
-    .attr("width",width)
-    .attr("transform","translate(30,30)");
+    .attr("height", height)
+    .attr("width", width)
+    .attr("transform", "translate(30,30)");
 
 
 const descriptionBlock = svg
     .append("g")
-    .attr("id","description");
+    .attr("id", "description");
 const descriptionSubBlock = descriptionBlock
     .append("g");
 
-    descriptionSubBlock
-        .append("text")
-        .attr("id","description-title")
-        .text("United States Educational Attainment")
-        .attr("x",width/4)
-        .attr("y",padding/2);
+descriptionSubBlock
+    .append("text")
+    .attr("id", "description-title")
+    .text("United States Educational Attainment")
+    .attr("x", width / 4)
+    .attr("y", padding / 2);
 
-        descriptionSubBlock
-        .append("text")
-        .attr("id","description-subtitle")
-        .text("Percentage of adults age 25 and older with a bachelor's degree or higher (2010-2014)")
-        .attr("x",width-70)
-        .attr("y",padding+50)
-        .attr("text-anchor","end");
+descriptionSubBlock
+    .append("text")
+    .attr("id", "description-subtitle")
+    .text("Percentage of adults age 25 and older with a bachelor's degree or higher (2010-2014)")
+    .attr("x", width - 70)
+    .attr("y", padding + 50)
+    .attr("text-anchor", "end");
+
+    
+// var firstColor = "#E5F5E0";
+// var lastColor = "#006D2C";
+
+// var linear = d3.scaleLinear()
+//     .domain([0.03,0.66])
+//     .range([firstColor,lastColor]);
+
+//     svg.append("g")
+//         .attr("transform",
+//         "translate("+(width-padding)/2+",200)")
+//         .attr("id","legend");
+
+// var legendLinear = d3.legendColor()
+//     .shapeWidth(55)
+//     .orient("horizontal")
+//     .scale(linear)
+//     .cells([0.03,0.12,0.21,0.3,0.39,0.48,0.57,0.66])
+//     .labelFormat(d3.format("0.0%"));
+
+//     svg.select("#legend").call(legendLinear);
+color = d3.scaleThreshold()
+    .domain([2, 4, 6, 8, 10])
+    .range(d3.schemePurples[6]);
+    format = d3.format("");
+legend = g => {
+    const width = 260;
+    const length = color.range().length;
+  
+    const x = d3.scaleLinear()
+        .domain([1, length - 1])
+        .rangeRound([width / length, width * (length - 1) / length]);
+  
+    g.selectAll("rect")
+      .data(color.range())
+      .join("rect")
+        .attr("height", 8)
+        .attr("x", (d, i) => x(i))
+        .attr("width", (d, i) => x(i + 1) - x(i))
+        .attr("fill", d => d);
+  
+    g.append("text")
+        .attr("y", -6)
+        .attr("fill", "currentColor")
+        .attr("text-anchor", "start")
+        .attr("font-weight", "bold");
+  
+    g.call(d3.axisBottom(x)
+        .tickSize(13)
+        .tickFormat(i => color.domain()[i - 1])
+        .tickValues(d3.range(1, length)))
+      .select(".domain")
+        .remove();
+  }
+
+  svg.append("g")
+      .attr("transform", "translate(600,340)")
+      .call(legend);
 
 fetch(educationDataUrl)
-    .then(response=>response.json())
-    .then(result=>{
-        eduData= result;
+    .then(response => response.json())
+    .then(result => {
+        eduData = result;
         fetch(countyDataUrl)
-            .then(response=>response.json())
-            .then(data=>{
+            .then(response => response.json())
+            .then(data => {
                 countyData = data;
                 console.log(eduData)
                 console.log(countyData);
 
-var projection = d3.geo.albersUsa()
-.scale(width/1.3/Math.PI)
-.translate([width/2,height/2]);
+                
+
+
             })
-    })
+    });
