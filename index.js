@@ -26,7 +26,7 @@ const svg = d3
 const descriptionBlock = svg
     .append("g")
     .attr("id", "description");
-    
+
 const descriptionSubBlock = descriptionBlock
     .append("g");
 
@@ -66,12 +66,6 @@ legend = g => {
         .attr("width", (d, i) => x(i + 1) - x(i))
         .attr("fill", d => d);
   
-    g.append("text")
-        .attr("y", -6)
-        .attr("fill", "currentColor")
-        .attr("text-anchor", "start")
-        .attr("font-weight", "bold");
-  
     g.call(d3.axisBottom(x)
         .tickSize(13)
         .tickFormat(i => format(color.domain()[i]))
@@ -93,10 +87,25 @@ fetch(educationDataUrl)
             .then(response => response.json())
             .then(data => {
                 countyData = data;
-                console.log(eduData)
-                console.log(countyData);
 
-                
+                const path = d3.geoPath();    
+
+                const map = svg.append("g")
+                    .selectAll("path")
+                    .data(topojson.feature(
+                        countyData, countyData.objects.counties
+                    ).features)
+                    .join("path")
+                    .attr("fill",(d,i)=>{
+                        var value = (eduData[i].bachelorsOrHigher)/100;
+                        return color(value)})
+                    .attr("d",path)
+                    .attr("class","county")
+                    .attr("data-fips",(d,i)=>eduData[i].fips)
+                    .attr("data-education",(d,i)=>eduData[i].bachelorsOrHigher);
+
+                map.attr("transform","translate("+padding+","+height/4+")");
+
 
 
             })
