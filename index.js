@@ -26,6 +26,7 @@ const svg = d3
 const descriptionBlock = svg
     .append("g")
     .attr("id", "description");
+    
 const descriptionSubBlock = descriptionBlock
     .append("g");
 
@@ -44,33 +45,11 @@ descriptionSubBlock
     .attr("y", padding + 50)
     .attr("text-anchor", "end");
 
-    
-var firstColor = "#E5F5E0";
-var lastColor = "#006D2C";
-
-// var linear = d3.scaleLinear()
-//     .domain([0.03,0.66])
-//     .range([firstColor,lastColor]);
-
-// svg.append("g")
-//         .attr("transform",
-//         "translate("+(width-padding)/2+",200)")
-//         .attr("id","legend");
-
-// var legendLinear = d3.legendColor()
-//     .shapeWidth(55)
-//     .orient("horizontal")
-//     .scale(linear)
-//     .cells([0.03,0.12,0.21,0.3,0.39,0.48,0.57,0.66])
-//     .labelFormat(d3.format("0.0%"));
-
-//     svg.select("#legend").call(legendLinear);
-
-
 color = d3.scaleThreshold()
     .domain([0.03, 0.12, 0.21, 0.3, 0.39,0.48,0.57,0.66])
     .range(d3.schemeGreens[7]);
     format = d3.format("0.0%");
+
 legend = g => {
     const width = 260;
     const length = color.range().length;
@@ -103,6 +82,7 @@ legend = g => {
 
   svg.append("g")
       .attr("transform", "translate(800,240)")
+      .attr("id","legend")
       .call(legend);
 
 fetch(educationDataUrl)
