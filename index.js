@@ -45,14 +45,14 @@ descriptionSubBlock
     .attr("text-anchor", "end");
 
     
-// var firstColor = "#E5F5E0";
-// var lastColor = "#006D2C";
+var firstColor = "#E5F5E0";
+var lastColor = "#006D2C";
 
 // var linear = d3.scaleLinear()
 //     .domain([0.03,0.66])
 //     .range([firstColor,lastColor]);
 
-//     svg.append("g")
+// svg.append("g")
 //         .attr("transform",
 //         "translate("+(width-padding)/2+",200)")
 //         .attr("id","legend");
@@ -65,14 +65,16 @@ descriptionSubBlock
 //     .labelFormat(d3.format("0.0%"));
 
 //     svg.select("#legend").call(legendLinear);
+
+
 color = d3.scaleThreshold()
-    .domain([2, 4, 6, 8, 10])
-    .range(d3.schemePurples[6]);
-    format = d3.format("");
+    .domain([0.03, 0.12, 0.21, 0.3, 0.39,0.48,0.57,0.66])
+    .range(d3.schemeGreens[7]);
+    format = d3.format("0.0%");
 legend = g => {
     const width = 260;
     const length = color.range().length;
-  
+    
     const x = d3.scaleLinear()
         .domain([1, length - 1])
         .rangeRound([width / length, width * (length - 1) / length]);
@@ -93,14 +95,14 @@ legend = g => {
   
     g.call(d3.axisBottom(x)
         .tickSize(13)
-        .tickFormat(i => color.domain()[i - 1])
-        .tickValues(d3.range(1, length)))
+        .tickFormat(i => format(color.domain()[i]))
+        .tickValues(d3.range(0, length+1)))
       .select(".domain")
         .remove();
   }
 
   svg.append("g")
-      .attr("transform", "translate(600,340)")
+      .attr("transform", "translate(800,240)")
       .call(legend);
 
 fetch(educationDataUrl)
